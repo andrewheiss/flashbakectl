@@ -24,7 +24,7 @@ PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbake.thesis.plist"
 
 # Path to your project
 # PROJECT="/Users/andrew/Documents/Writing"		# Example
-PROJECT="/Users/andrew/Documents/AUC\ 2009-2010/Thesis/Actual\ writing"
+PROJECT="/Users/andrew/Documents/AUC 2009-2010/Thesis/Actual writing"
 
 
 #----------------------
@@ -97,7 +97,7 @@ manual() {
 
 # Actually run Flashbake
 run() {
-	FLASHBAKE PROJECT 0 > /dev/null
+	$FLASHBAKE "$PROJECT" 0 > /dev/null
 }
 
 # Listen for script options
