@@ -19,8 +19,8 @@
 FLASHBAKE="/usr/local/bin/flashbake"
 
 # Path to the plist file
-# PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbake.plist"		# Example
-PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbake.thesis.plist"
+# PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbakectl.plist"		# Example
+PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbakectl.plist"
 
 # Path to your project
 # PROJECT="/Users/andrew/Documents/Writing"		# Example
