@@ -1,0 +1,132 @@
+#!/bin/sh
+#
+# Author:		Andrew Heiss - http://www.andrewheiss.com
+# Project site: http://github.com/andrewheiss/Flashbake-launchd-control
+# Description: 	Frankenscript plugin that takes track information from iTunes via Applescript 
+#				and adds it to a git commit message with Flashbake
+# License: 		Licensed under the MIT License (see README for details)
+# Date: 		September 23, 2009
+# Version:		1.0
+#
+# TODO: Allow for multiple projects or multiple plists
+
+#----------------
+# Configuration
+#----------------
+
+# Path to Flashbake
+# FLASHBAKE="/usr/local/bin/flashbake"			# Example
+FLASHBAKE="/usr/local/bin/flashbake"
+
+# Path to the plist file
+# PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbake.plist"		# Example
+PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbake.thesis.plist"
+
+# Path to your project
+# PROJECT="/Users/andrew/Documents/Writing"		# Example
+PROJECT="/Users/andrew/Documents/AUC\ 2009-2010/Thesis/Actual\ writing"
+
+
+#----------------------
+# Begin actual script
+#----------------------
+
+# Display usage instructions
+usage() {
+	cat <<EndUsage
+
+#########################
+Flashbake launchd control	
+#########################
+
+Flashbake launchd control allows you to dynamically load and unload a plist 
+file to control how often Flashbake routinely runs. Rather than set up a 
+permanent daemon that needlessly runs all the time, load the plist when you 
+start writing and unload it when you're done.
+
+Options:
+	-a	Run Flashbake automatically (only use with cron or plists)
+	-h	Show this message
+	-l	Load the plist
+	-m	Run Flashbake manually
+	-u	Unload the plist
+	-v	See file version
+
+EndUsage
+	exit
+}
+
+# Display version
+version() { 
+	cat <<EndVersion
+Flashbake launchd control v.1.0
+EndVersion
+	exit
+}
+
+# Load the plist into launchd
+load() {
+	launchctl setenv PATH $PATH
+	launchctl load -w $PLIST
+	echo "plist loaded."
+	exit
+}
+
+# Unload the plist from launchd
+unload() {
+	launchctl setenv PATH /usr/bin:/bin:/usr/sbin:/sbin
+	launchctl unload -w $PLIST
+	echo "plist unloaded."
+	exit
+}
+
+# Run Flashbake - use with automated scripts.
+# The only different between this and manual() is the log message
+automatic() {
+	echo "Automatically running Flashbake."
+	run
+	exit
+}
+
+# Run Flashbake manually
+manual() {
+	echo "Running Flashbake manually"
+	run
+	exit
+}
+
+# Actually run Flashbake
+run() {
+	FLASHBAKE PROJECT 0 > /dev/null
+}
+
+# Listen for script options
+while getopts "ahlmuv" Option
+do
+	case $Option in 
+	  a)
+		automatic
+		;;
+	  h)
+		usage
+		;;
+	  l)
+		load
+		;;
+	  m)
+		manual
+		;;
+	  u)
+		unload
+		;;
+	  v)
+		version
+		;;
+	  *)
+		usage
+		;;
+	esac
+done
+
+# Display usage options by default. Script needs a flag to run properly.
+usage
