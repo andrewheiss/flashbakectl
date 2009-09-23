@@ -1,9 +1,8 @@
 #!/bin/sh
 #
 # Author:		Andrew Heiss - http://www.andrewheiss.com
-# Project site: http://github.com/andrewheiss/Flashbake-launchd-control
-# Description: 	Frankenscript plugin that takes track information from iTunes via Applescript 
-#				and adds it to a git commit message with Flashbake
+# Project site: http://github.com/andrewheiss/flashbakectl
+# Description: 	Allows Flashbake to be controlled by a launchd plist rather than cron
 # License: 		Licensed under the MIT License (see README for details)
 # Date: 		September 23, 2009
 # Version:		1.0
@@ -35,14 +34,14 @@ PROJECT="/Users/andrew/Documents/AUC\ 2009-2010/Thesis/Actual\ writing"
 usage() {
 	cat <<EndUsage
 
-#########################
-Flashbake launchd control	
-#########################
+##############
+flashbakectl	
+##############
 
-Flashbake launchd control allows you to dynamically load and unload a plist 
-file to control how often Flashbake routinely runs. Rather than set up a 
-permanent daemon that needlessly runs all the time, load the plist when you 
-start writing and unload it when you're done.
+flashbakectl allows you to dynamically load and unload a plist file 
+to control how often Flashbake routinely runs. Rather than set up a 
+permanent daemon that needlessly runs all the time, load the plist 
+when you start writing and unload it when you're done.
 
 Options:
 	-a	Run Flashbake automatically (only use with cron or plists)
@@ -59,7 +58,7 @@ EndUsage
 # Display version
 version() { 
 	cat <<EndVersion
-Flashbake launchd control v.1.0
+Flashbakectl v.1.0
 EndVersion
 	exit
 }
