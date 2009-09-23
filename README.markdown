@@ -1,6 +1,6 @@
 # flashbakectl #
 
-flashbakectl is a simple front end that loads and unloads plist daemons for OS X's `launchd`, allowing you to control when [Flashbake](http://github.com/commandline/flashbake/ "commandline's flashbake at master - GitHub") is automatically run.
+flashbakectl is a simple front end that loads and unloads plist daemons for OS X's `launchd`, allowing you to control when [Flashbake](http://github.com/commandline/flashbake/ "commandline's flashbake at master - GitHub") is automatically run. 
 
 ## Installation ##
 
