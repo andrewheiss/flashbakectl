@@ -5,7 +5,7 @@
 # Description: 	Allows Flashbake to be controlled by a launchd plist rather than cron
 # License: 		Licensed under the MIT License (see README for details)
 # Date: 		September 23, 2009
-# Version:		1.1
+# Version:		1.1 (February 19, 2010)
 #
 
 
