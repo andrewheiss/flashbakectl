@@ -26,6 +26,9 @@ PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbakectl.plist"
 # PROJECT="/Users/andrew/Documents/Writing"		# Example
 PROJECT="/Users/andrew/Documents/AUC 2009-2010/Thesis/Actual writing"
 
+# Name of your remote respository
+REPO="unfuddle"
+
 
 #----------------------
 # Begin actual script
@@ -49,6 +52,7 @@ Options:
 	-h	Show this message
 	-l	Load the plist
 	-m	Run Flashbake manually
+	-p	Push master branch to the remote server
 	-u	Unload the plist
 	-v	See file version
 
@@ -95,13 +99,20 @@ manual() {
 	exit
 }
 
+# Push master branch to server
+push() {
+	echo "Pushing $REPO master"
+	cd "$PROJECT" && git push $REPO master
+	exit
+}
+
 # Actually run Flashbake
 run() {
 	$FLASHBAKE "$PROJECT" 0 > /dev/null
 }
 
 # Listen for script options
-while getopts "ahlmuv" Option
+while getopts "ahlmpuv" Option
 do
 	case $Option in 
 	  a)
@@ -115,6 +126,9 @@ do
 		;;
 	  m)
 		manual
+		;;
+		p)
+		push
 		;;
 	  u)
 		unload
