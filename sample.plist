@@ -9,6 +9,8 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/path/to/flashbakectl</string>
+		<string>-c</string>
+		<string>sample</string>
 		<string>-a</string>
 	</array>
 	<key>StartInterval</key>

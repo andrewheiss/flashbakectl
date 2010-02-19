@@ -5,29 +5,8 @@
 # Description: 	Allows Flashbake to be controlled by a launchd plist rather than cron
 # License: 		Licensed under the MIT License (see README for details)
 # Date: 		September 23, 2009
-# Version:		1.0
+# Version:		1.1
 #
-# TODO: Allow for multiple projects or multiple plists
-
-
-#----------------
-# Configuration
-#----------------
-
-# Path to Flashbake
-# FLASHBAKE="/usr/local/bin/flashbake"			# Example
-FLASHBAKE="/usr/local/bin/flashbake"
-
-# Path to the plist file
-# PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbakectl.plist"		# Example
-PLIST="/Users/andrew/Library/LaunchAgents/com.andrew.flashbakectl.plist"
-
-# Path to your project
-# PROJECT="/Users/andrew/Documents/Writing"		# Example
-PROJECT="/Users/andrew/Documents/AUC 2009-2010/Thesis/Actual writing"
-
-# Name of your remote respository
-REPO="unfuddle"
 
 
 #----------------------
@@ -48,13 +27,17 @@ permanent daemon that needlessly runs all the time, load the plist
 when you start writing and unload it when you're done.
 
 Options:
-	-a	Run Flashbake automatically (only use with cron or plists)
-	-h	Show this message
-	-l	Load the plist
-	-m	Run Flashbake manually
-	-p	Push master branch to the remote server
-	-u	Unload the plist
-	-v	See file version
+	-a		Run Flashbake automatically (only use with cron or plists)
+	-c sample	Specify which project configuration file you want to use
+	-h		Show this message
+	-l		Load the plist
+	-m		Run Flashbake manually
+	-p		Push master branch to the remote server
+	-u		Unload the plist
+	-v		See file version
+	
+Example:
+	flashbakectl -c sample -l
 
 EndUsage
 	exit
@@ -63,7 +46,7 @@ EndUsage
 # Display version
 version() { 
 	cat <<EndVersion
-Flashbakectl v.1.0
+Flashbakectl v.1.1
 EndVersion
 	exit
 }
@@ -72,7 +55,7 @@ EndVersion
 load() {
 	launchctl setenv PATH $PATH
 	launchctl load -w $PLIST
-	echo "plist loaded."
+	echo "plist loaded for $TITLE."
 	exit
 }
 
@@ -80,28 +63,28 @@ load() {
 unload() {
 	launchctl setenv PATH /usr/bin:/bin:/usr/sbin:/sbin
 	launchctl unload -w $PLIST
-	echo "plist unloaded."
+	echo "plist unloaded for $TITLE."
 	exit
 }
 
 # Run Flashbake - use with automated scripts.
 # The only different between this and manual() is the log message
 automatic() {
-	echo "Automatically running Flashbake."
+	echo "Automatically running Flashbake for $TITLE."
 	run
 	exit
 }
 
 # Run Flashbake manually
 manual() {
-	echo "Running Flashbake manually"
+	echo "Running Flashbake manually for $TITLE."
 	run
 	exit
 }
 
 # Push master branch to server
 push() {
-	echo "Pushing $REPO master"
+	echo "Pushing $REPO master for $TITLE"
 	cd "$PROJECT" && git push $REPO master
 	exit
 }
@@ -112,11 +95,15 @@ run() {
 }
 
 # Listen for script options
-while getopts "ahlmpuv" Option
+while getopts "ac:hlmpuv" Option
 do
 	case $Option in 
 	  a)
 		automatic
+		;;
+		c)
+		PWD="$(dirname "$(test -L "$0" && readlink "$0" || echo "$0")")"
+		source $PWD/$OPTARG.cfg
 		;;
 	  h)
 		usage
@@ -136,6 +123,10 @@ do
 	  v)
 		version
 		;;
+		:)
+    echo "Option -$OPTARG requires an argument."
+    exit 1
+    ;;
 	  *)
 		usage
 		;;
